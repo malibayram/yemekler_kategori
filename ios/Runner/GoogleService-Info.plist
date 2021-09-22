@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>497457137879-f5chjhrsisv5hear42v7eijv9vjggkkp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.497457137879-f5chjhrsisv5hear42v7eijv9vjggkkp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDqaZkgiSa6jdq0lYTRcDGiard03HAplQs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>497457137879</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>dh.oguz.yemekler</string>
+	<key>PROJECT_ID</key>
+	<string>yemekkategori</string>
+	<key>STORAGE_BUCKET</key>
+	<string>yemekkategori.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:497457137879:ios:11052f43da6cc848150892</string>
+</dict>
+</plist>

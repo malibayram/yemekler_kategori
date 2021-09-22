@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "497457137879",
+    "project_id": "yemekkategori",
+    "storage_bucket": "yemekkategori.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497457137879:android:8f75b05ff6049665150892",
+        "android_client_info": {
+          "package_name": "dh.oguz.yemekler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497457137879-ior8kdv13gvfjt8fseb2ep7gp83q44lu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0D04nmFvDWv6ZrAQg9patCb7IvMj--Qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497457137879-ior8kdv13gvfjt8fseb2ep7gp83q44lu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
