@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AdminPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class _AdminPageState extends State<AdminPage> {
     "Tatlılar",
   ];
 
-  String _baslik = "";
   String _tip = "Ana Yemekler";
 
   @override
@@ -35,9 +35,6 @@ class _AdminPageState extends State<AdminPage> {
                 border: OutlineInputBorder(),
                 labelText: "Başlık",
               ),
-              onChanged: (v) {
-                _baslik = v;
-              },
             ),
             const Divider(),
             SizedBox(
@@ -57,11 +54,30 @@ class _AdminPageState extends State<AdminPage> {
             ),
             const Divider(),
             ElevatedButton(
-              onPressed: () async {
-                _baslik = "";
-                _txtCtrlr.clear();
+              onPressed: () {
+                if (_txtCtrlr.text.isNotEmpty) {
+                  final data = {
+                    'baslik': _txtCtrlr.text,
+                    'tip': _tip,
+                    'timestamp': FieldValue.serverTimestamp(),
+                  };
 
-                await Future.delayed(Duration(seconds: 3));
+                  String? id;
+
+                  FirebaseFirestore.instance
+                      .collection('yemekler')
+                      .add(data)
+                      .then((docRef) {
+                    print(docRef.id);
+                    // 21:49
+                    id = docRef.id;
+                  });
+                  // 21:48
+                  print(id);
+
+                  _txtCtrlr.clear();
+                }
+
                 if (mounted) {
                   setState(() {});
                 }
