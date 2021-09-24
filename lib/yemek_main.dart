@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:yemekler/main_inherited.dart';
 
 import 'admin_page.dart';
 import 'yemek_partlar/ana_yemekler.dart';
@@ -24,6 +26,8 @@ class _FoodMainState extends State<FoodMain> {
 
   @override
   Widget build(BuildContext context) {
+    final bildirimServisi = MainInherited.of(context).bildirimServisi;
+
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
@@ -68,6 +72,20 @@ class _FoodMainState extends State<FoodMain> {
         } else {
           if (FirebaseAuth.instance.currentUser == null) {
             FirebaseAuth.instance.signInAnonymously();
+          } else {
+            bildirimServisi.izinAl();
+
+            // kişiler oturum açarak uygulamayı kullanmıyorsa alt satırdaki kod TAMAMEN gereksiz
+            bildirimServisi.jetonAlKaydet();
+
+            bildirimServisi.bildirimSistemineAboneOl();
+
+            if (!kIsWeb) {
+              bildirimServisi.konuyaAboneOl('tum-kategoriler');
+            }
+
+            // c8KSyhumRdwQztpVg3B9uh:APA91bEZpLyyADCGkCkfYwCipauYY1cSRMl0cebM1fBAnNznEP
+            // 3QUd83rCf8sM9HAH71Wecz3IG5DJazISCzYqoOyHCiZ38duJXhEy_8Mw2WDw9_haXEjPtaoYNIQnz7XDgVh4PpwLM6
           }
 
           return const Scaffold(
