@@ -15,9 +15,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(const YemekApp());
 }
@@ -27,12 +29,12 @@ class YemekApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MainInherited(
-        child: const FoodMain(),
-        bildirimServisi: BildirimServisi(),
+    return MainInherited(
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: FoodMain(),
       ),
+      bildirimServisi: BildirimServisi(),
     );
   }
 }

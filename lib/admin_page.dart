@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'main_inherited.dart';
+
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
 
@@ -20,6 +22,8 @@ class _AdminPageState extends State<AdminPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bildirimServisi = MainInherited.of(context).bildirimServisi;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Admin Page"),
@@ -63,6 +67,8 @@ class _AdminPageState extends State<AdminPage> {
                   };
 
                   String? id;
+
+                  bildirimServisi.bildirimGonderEski(data);
 
                   FirebaseFirestore.instance
                       .collection('yemekler')
