@@ -2,7 +2,6 @@
     package="dh.oguz.yemekler">
 
     <application
-        android:name=".Application"
         android:icon="@mipmap/launcher_icon"
         android:label="yemekler"
         android:usesCleartextTraffic="true">
