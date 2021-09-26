@@ -68,7 +68,7 @@ class _AdminPageState extends State<AdminPage> {
 
                   String? id;
 
-                  bildirimServisi.bildirimGonderEski(data);
+                  bildirimServisi.bildirimGonderYeni(data);
 
                   FirebaseFirestore.instance
                       .collection('yemekler')

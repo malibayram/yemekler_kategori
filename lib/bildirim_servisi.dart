@@ -70,8 +70,17 @@ class BildirimServisi {
   // REST API ile bildirim gönderme
   Future<void> bildirimGonderEski(Map data) async {
     const url = "https://fcm.googleapis.com/fcm/send";
+
+    // TODO :: bunu bu şekilde kesinlikle kullanmamak gerekiyor.
+    // reverse engineering
     const serverKey =
         "AAAAc9LBiNc:APA91bGx4J-_wHnup6pN0rR_o_-0Zo3w0L4qRQooIfimgm-p1_cDThnnUq_IPt6I_-Az9bh8XV8QBzyVPyvKouctqrRoNWI_He0SAeLLrhqyoqz_VzySzG157tM05Ez36Z3OZVYxF6qO";
+
+    final fcmServerKey = (await _firestore
+            .collection('uygulama-bilgileri')
+            .doc('firebase')
+            .get())
+        .data()!['fcm-server-key'];
 
     // tokenleri manuel olarak buradaki listeye ekleyebiliriz
     const tokensExample = [
@@ -81,17 +90,24 @@ class BildirimServisi {
     // tokenleri firebase firestore'dan alma
     final usersDocs = await _firestore.collection('users').get();
     final tokens = usersDocs.docs
-        .map((e) => e.data()['fcmTokens'])
+        .map((e) {
+          if (e.exists && e.data().containsKey('fcmToken')) {
+            return e.data()['fcmTokens'];
+          } else {
+            return [];
+          }
+        })
         .expand((element) => element)
         .toList();
 
     print(tokens);
 
+    // network tracking
     http.Response cevap = await http.post(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        'Authorization': 'key=$serverKey',
+        'Authorization': 'key=$fcmServerKey',
       },
       body: jsonEncode(
         <String, dynamic>{
@@ -121,10 +137,50 @@ class BildirimServisi {
 
   // REST API ile bildirim gönderme
   Future<void> bildirimGonderYeni(Map data) async {
-    const url = "https://fcm.googleapis.com/fcm/send";
-    const serverKey =
-        "AAAAc9LBiNc:APA91bGx4J-_wHnup6pN0rR_o_-0Zo3w0L4qRQooIfimgm-p1_cDThnnUq_IPt6I_-Az9bh8XV8QBzyVPyvKouctqrRoNWI_He0SAeLLrhqyoqz_VzySzG157tM05Ez36Z3OZVYxF6qO";
-    const tokenExample =
-        "c8KSyhumRdwQztpVg3B9uh:APA91bEZpLyyADCGkCkfYwCipauYY1cSRMl0cebM1fBAnNznEP3QUd83rCf8sM9HAH71Wecz3IG5DJazISCzYqoOyHCiZ38duJXhEy_8Mw2WDw9_haXEjPtaoYNIQnz7XDgVh4PpwLM6";
+    const url =
+        "https://fcm.googleapis.com/v1/projects/yemekkategori/messages:send";
+
+    const accessToken =
+        "ya29.c.Kp8BEQj2xXv-w_pmFsmcxZH8TPV9nqsuhloKNeaIx3vUBmyxtm6_M4r2ZyFqWgfPMGtqC1WYVt6pDdz0a4mv9p_oe4653RV1-bVrwsiuYXhxnyIOuJG5JIa21bPMdWDE3Ap_suo_4e7WsygvvSqijDcO5myRJGgQTGyp2oQp-7i3HCk5MjUcuvUiBCnC7pBqIjR1D34o159C9bCQXLUcNogq";
+
+    // tokenleri firebase firestore'dan alma
+    final usersDocs = await _firestore.collection('users').get();
+    final tokens = usersDocs.docs
+        .map((e) {
+          if (e.exists && e.data().containsKey('fcmTokens')) {
+            return e.data()['fcmTokens'];
+          } else {
+            return [];
+          }
+        })
+        .expand((element) => element)
+        .toList();
+
+    http.Response cevap = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "message": {
+            "topic": "tum-kategoriler",
+            "data": {},
+            "notification": {
+              "title": "Yeni bir içerik eklendi",
+              "body":
+                  "${data['tip']} kategorisine ${data['baslik']} başlıklı yeni bir yemek eklendi",
+            }
+          }
+        },
+      ),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    print(cevap);
+    print(cevap.body);
+    print(cevap.headers);
+    print(cevap.statusCode);
   }
 }
