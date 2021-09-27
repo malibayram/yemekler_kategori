@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class BildirimServisi {
@@ -48,6 +49,12 @@ class BildirimServisi {
       print('Message data: ${message.data}');
 
       if (message.notification != null) {
+        Fluttertoast.showToast(
+          msg: "${message.notification?.title}\n${message.notification?.body}",
+          timeInSecForIosWeb: 1,
+          toastLength: Toast.LENGTH_SHORT,
+        );
+
         print('Message also contained a notification: ${message.notification}');
         print(
             'Message also contained a notification: ${message.notification?.title}');
@@ -91,7 +98,7 @@ class BildirimServisi {
     final usersDocs = await _firestore.collection('users').get();
     final tokens = usersDocs.docs
         .map((e) {
-          if (e.exists && e.data().containsKey('fcmToken')) {
+          if (e.exists && e.data().containsKey('fcmTokens')) {
             return e.data()['fcmTokens'];
           } else {
             return [];
@@ -100,6 +107,7 @@ class BildirimServisi {
         .expand((element) => element)
         .toList();
 
+    print("tokens");
     print(tokens);
 
     // network tracking
@@ -166,7 +174,7 @@ class BildirimServisi {
         <String, dynamic>{
           "message": {
             "topic": "tum-kategoriler",
-            "data": {},
+            "data": {...data, "timestamp": "tarih"},
             "notification": {
               "title": "Yeni bir içerik eklendi",
               "body":

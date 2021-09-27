@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:yemekler/main_inherited.dart';
@@ -16,6 +17,78 @@ class FoodMain extends StatefulWidget {
 }
 
 class _FoodMainState extends State<FoodMain> {
+  // Bu alttaki metot uygulamanın ilk Widgetı içine yerleştirilecek ve sadece bir sefer yazılacak
+  // Burada bildirimi yakalayabilmek için beklemeye başlıyoruz
+  Future<void> gelenBildirimiYakala() async {
+    // Uygulama terminated (ölü) durumunda ise bildirime tıklanması sonucu uygulama dirilecek
+    // ve bildirim mesajını bu şekilde yakalayacağız
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+    // uygulama bildirimden değil de normal bir şekilde açıldıysa herhangi birşey yakalayamayacağız
+    // o zaman bildirimi işlemeye gerek yok
+    if (initialMessage != null) {
+      _bildirimiIsle(initialMessage);
+    }
+
+    // Burada da uygulama arkaplanda çalışıyorken gelen bildirime tıklanarak açıldıysa bildirimi yakalıyoruz
+    // ve işleme fonksiyonuna iletiyoruz.
+    FirebaseMessaging.onMessageOpenedApp.listen(_bildirimiIsle);
+  }
+
+  // Yukarıdaki metodun yakaladığı mesajı biz alttaki metotta işliyoruz.
+  void _bildirimiIsle(RemoteMessage bildirim) {
+    // gelen her bildirimin data kısmında tip anahtarına bağlı bir değer olduğunu varsayıyoruz
+    if (bildirim.data['tip'] == 'Ana Yemekler') {
+      /* Navigator.pushNamed(
+        context,
+        '/chat',
+        arguments: ChatArguments(bildirim),
+      ); */
+      partIndex = 0;
+    } else if (bildirim.data['tip'] == 'Sulu Yemekler') {
+      partIndex = 1;
+    } else if (bildirim.data['tip'] == 'Tatlılar') {
+      partIndex = 2;
+    }
+
+    // Sayfaya yönlenmek istiyorsan alttakini yorumdan çıkar
+    /* if (bildirim.data['tip'] != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AnaYemekler(
+            kategori: bildirim.data['tip'],
+            mesaj: bildirim,
+          ),
+        ),
+      );
+    } */
+
+    /* final tipler = [
+      "Ana Yemekler",
+      "Sulu Yemekler",
+      "Tatlılar",
+    ];
+
+    partIndex = tipler.indexOf(bildirim.data['tip']); */
+
+    /* switch (bildirim.data['tip']) {
+      case 'Ana Yemekler':
+        partIndex = 0;
+        break;
+      case 'Sulu Yemekler':
+        partIndex = 1;
+        break;
+      case 'Tatlılar':
+        partIndex = 2;
+        break;
+
+      default:
+    } */
+
+    setState(() {});
+  }
+
   int partIndex = 0;
 
   final partlar = [
@@ -23,6 +96,20 @@ class _FoodMainState extends State<FoodMain> {
     const SuluYemekler(),
     const Tatlilar(),
   ];
+
+  /* @override
+  void didChangeDependencies() {
+    setupInteractedMessage();
+
+    super.didChangeDependencies();
+  } */
+
+  @override
+  void initState() {
+    gelenBildirimiYakala();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

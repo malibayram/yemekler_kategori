@@ -1,7 +1,3 @@
-import argparse
-import json
-import requests
-
 from oauth2client.service_account import ServiceAccountCredentials
 
 SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
