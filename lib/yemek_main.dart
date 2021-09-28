@@ -51,8 +51,10 @@ class _FoodMainState extends State<FoodMain> {
       partIndex = 2;
     }
 
+    setState(() {});
+
     // Sayfaya yönlenmek istiyorsan alttakini yorumdan çıkar
-    /* if (bildirim.data['tip'] != null) {
+    if (bildirim.data['tip'] != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -62,7 +64,7 @@ class _FoodMainState extends State<FoodMain> {
           ),
         ),
       );
-    } */
+    }
 
     /* final tipler = [
       "Ana Yemekler",
@@ -85,8 +87,6 @@ class _FoodMainState extends State<FoodMain> {
 
       default:
     } */
-
-    setState(() {});
   }
 
   int partIndex = 0;
@@ -99,7 +99,7 @@ class _FoodMainState extends State<FoodMain> {
 
   /* @override
   void didChangeDependencies() {
-    setupInteractedMessage();
+    gelenBildirimiYakala();
 
     super.didChangeDependencies();
   } */

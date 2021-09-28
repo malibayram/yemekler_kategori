@@ -14,7 +14,7 @@ class AnaYemekler extends StatelessWidget {
   Widget build(BuildContext context) {
     final bildirimServisi = MainInherited.of(context).bildirimServisi;
     return Scaffold(
-      appBar: AppBar(title: Text("$kategori")),
+      appBar: kategori == null ? null : AppBar(title: Text("$kategori")),
       body: Column(
         children: [
           const Center(child: Text("Ana Yemekler")),
