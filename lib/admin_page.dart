@@ -66,20 +66,13 @@ class _AdminPageState extends State<AdminPage> {
                     'timestamp': FieldValue.serverTimestamp(),
                   };
 
-                  String? id;
-
-                  bildirimServisi.bildirimGonderEski(data);
-
                   FirebaseFirestore.instance
                       .collection('yemekler')
                       .add(data)
                       .then((docRef) {
-                    print(docRef.id);
-                    // 21:49
-                    id = docRef.id;
+                    bildirimServisi
+                        .bildirimGonderEski({...data, 'yemek-id': docRef.id});
                   });
-                  // 21:48
-                  print(id);
 
                   _txtCtrlr.clear();
                 }

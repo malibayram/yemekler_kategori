@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yemekler/main_inherited.dart';
 
 import 'admin_page.dart';
+import 'yemek_detay.dart';
 import 'yemek_partlar/ana_yemekler.dart';
 import 'yemek_partlar/sulu_yemekler.dart';
 import 'yemek_partlar/tatlilar.dart';
@@ -58,10 +59,16 @@ class _FoodMainState extends State<FoodMain> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => AnaYemekler(
-            kategori: bildirim.data['tip'],
-            mesaj: bildirim,
-          ),
+          builder: (_) {
+            if (bildirim.data.containsKey('yemek-id')) {
+              return YemekDetay(yemekId: bildirim.data['yemek-id']);
+            } else {
+              return AnaYemekler(
+                kategori: bildirim.data['tip'],
+                mesaj: bildirim,
+              );
+            }
+          },
         ),
       );
     }
